@@ -1,0 +1,24 @@
+{
+  "name": "web-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@agm/core": "^1.0.0",
+    "@angular/animations": "^8.2.14",
+    "@angular/material": "^8.2.3",
+    "@types/googlemaps": "^3.38.0",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "ng-bootstrap": "^1.6.3",
+    "path": "^0.12.7",
+    "request": "^2.88.0",
+    "rxjs-compat": "^6.5.3"
+  }
+}
