@@ -1,0 +1,21 @@
+<div style="text-align:left;width:500px;">
+    <table *ngIf="favorites_data">
+        <!-- ADD HEADERS -->
+        <tr>
+            <th>#</th>
+            <th>Image</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Wish List</th>
+        </tr>
+
+        <!-- BIND ARRAY TO TABLE -->
+        <tr *ngFor="let fav of favorites_data">
+            <td>{{fav.id}}</td>
+            <td><img src="{{fav.image}}" height="42" width="42"></td>
+            <td><a href = "{{fav.link}}">{{fav.city}}</a></td>
+            <td>{{fav.state}}</td>
+            <td (click)="removeRow(fav.id)"><i class="material-icons md-48">{{fav.wishlist}}</i></td>
+        </tr>
+    </table>
+</div>

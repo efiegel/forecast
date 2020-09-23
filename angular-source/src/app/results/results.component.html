@@ -1,0 +1,103 @@
+<div class="progress" *ngIf="prog_bar == true">
+  <div
+    class="progress-bar progress-bar-striped progress-bar-animated"
+    role="progressbar"
+    aria-valuenow="75"
+    aria-valuemin="0"
+    aria-valuemax="100"
+    style="width: 50%"
+  ></div>
+</div>
+
+<!-- <i class="material-icons md-48">search</i>
+<i class="material-icons md-48">clear_all</i> -->
+<!-- <i class="material-icons md-48">star</i>
+<i class="material-icons md-48">star_border</i> -->
+
+<div *ngIf="prog_bar == false">
+    <table>
+        <td><a class="twitter-share-button" href={{tweet}}><img src={{twitter}} height="40" width="60" ></a></td>
+        <td (click)="setFavorite()"><i class="material-icons md-48">{{favorite}}</i></td>
+    </table>
+</div>
+
+
+<tabset #tabset *ngIf="prog_bar == false">
+    <tab heading="Current">
+      <!-- <img src='https://cdn2.iconfinder.com/data/icons/weather-74/24/weather-16-512.png' height="42" width="42"> -->
+      <!-- <img src="{{seal}}" height="42" width="42"> -->
+
+      <div id='summary_table'>
+			<p style='font-size:32px;line-height: 5px;height: 5px;margin-top: 0px;margin-bottom: 0px;'>{{cur_city}}</p><br>
+            {{cur_tz}}<br>
+            
+            <img src="{{seal}}" height="200" width="200">
+            
+			<p style='font-size:60px; line-height: 5px;height: 5px;margin-top: 40px;margin-bottom: 20px;'>{{cur_temp}} °F </p><br>
+			<p style='font-size:24px;line-height: 5px;height: 5px;margin-top: 0px;margin-bottom: 0px;'>{{cur_status}}</p><br>
+            
+			<table class='summary_status'>
+				<tr>
+					<td><span title='Humidity'><img src='https://cdn2.iconfinder.com/data/icons/weather-74/24/weather-16-512.png' class='icon'></span></td>
+					<td><span title='Pressure'><img src='https://cdn2.iconfinder.com/data/icons/weather-74/24/weather-25-512.png' class='icon'></span></td>
+					<td><span title='Wind Speed'><img src='https://cdn2.iconfinder.com/data/icons/weather-74/24/weather-27-512.png' class='icon'></span></td>
+					<td><span title='Visibility'><img src='https://cdn2.iconfinder.com/data/icons/weather-74/24/weather-30-512.png' class='icon'></span></td>
+					<td><span title='Cloud Cover'><img src='https://cdn2.iconfinder.com/data/icons/weather-74/24/weather-28-512.png' class='icon'></span></td>
+					<td><span title='Ozone'><img src='https://cdn2.iconfinder.com/data/icons/weather-74/24/weather-24-512.png' class='icon'></span></td>
+				</tr>
+				<tr>
+					<td>{{cur_humidity}}</td>
+					<td>{{cur_pressure}}</td>
+					<td>{{cur_wind}}</td>
+					<td>{{cur_visibility}}</td>
+					<td>{{cur_cloud}}</td>
+					<td>{{cur_ozone}}</td>
+				</tr>
+			</table>
+		</div>
+
+
+
+
+    </tab>
+
+    <tab heading="Hourly">
+        <select
+            class="form-control"
+            [(ngModel)]="weatherSelect"
+            name="weatherSelect"
+            (change) = "makeChart()"
+            >
+            <!-- <option value="temperature" selected>Temperature</option> -->
+            <option *ngFor="let weather of weather_array" [ngValue]="weather"
+                >{{ weather.name }}
+            </option>
+        </select>
+
+        <div>
+            <div style="display: table" style="height:30vh; width:60vw; text-align: center">
+                <canvas baseChart width="300" height="200"
+                    [datasets]="hr_data"
+                    [labels]="hr_labels"
+                    [options]="hr_options"
+                    [legend]="hr_legend"
+                    [chartType]="hr_type">
+                </canvas>
+            </div>
+        </div>
+    </tab>
+            
+    <tab heading="Weekly">
+        <div>
+            <div style="display: block" style="height:30vh; width:60vw; text-align: center">
+                <canvas baseChart width="300" height="200"
+                    [datasets]="wk_data"
+                    [labels]="wk_labels"
+                    [options]="wk_options"
+                    [legend]="wk_legend"
+                    [chartType]="wk_type">
+                </canvas>
+            </div>
+        </div>
+    </tab>
+</tabset>

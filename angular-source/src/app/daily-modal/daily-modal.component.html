@@ -1,0 +1,45 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left">{{title}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <table>
+        <tr>
+            <td style='font-size:32px;'>{{city}}</td>
+            <td rowspan='2'><img src={{icon}} class='icon'></td>
+        </tr>
+        <tr>
+            <td style='font-size:60px;'>{{temp}} °F </td><br>
+        </tr>
+        <tr>
+            <td>{{status}}</td><br>
+        </tr>
+    </table>
+
+    <table>
+        <col width='240'>
+        <col width='120'>
+        <tr>
+            <td style='text-align:right;'>Precipitation: </td>
+            <td style='text-align:left;'> {{precip}}</td>
+        </tr>
+        <tr>
+            <td style='text-align:right;'>Chance of Rain: </td>
+            <td style='text-align:left;'>{{rainchance}} %</td>
+        </tr>
+        <tr>
+            <td style='text-align:right;'>Wind Speed: </td>
+            <td style='text-align:left;'>{{wind}} mph</td>
+        </tr>
+        <tr>
+            <td style='text-align:right;'>Humidity: </td>
+            <td style='text-align:left;'>{{humidity}} %</td>
+        </tr>
+        <tr>
+            <td style='text-align:right;'>Visibility: </td>
+            <td style='text-align:left;'>{{visibility}} mi</td>
+        </tr>
+    </table>
+</div>
