@@ -3,34 +3,16 @@
     <!-- Bootstrap Form -->
     <form id='mainform'> 
     <!-- <form [formGroup]="myForm">  -->
-    <h1>Weather Search</h1>
-    <div class="form-group row">
-        <label for="street" class="col-sm-1 col-form-label" required>Street</label>
-        <div class="col-sm-3">
-        <input
-            type="text"
-            class="form-control"
-            id="input_street"
-            name="input_street"
-            placeholder="Enter Street Name"
-            [(ngModel)]="input_street"
-            [disabled]="isChecked"
-        />
-        </div>
-        <!-- <div *ngIf="input_street.errors.minlength">
-            Name cannot be more than 30 characters long.
-            </div> -->
-    </div>
+    <h1>Weather Forecast</h1>
 
     <div class="form-group row">
-        <label for="city" class="col-sm-1 col-form-label">City</label>
         <div class="col-sm-3">
         <input
             type="text"
             class="form-control"
             id="input_city"
             name="input_city"
-            placeholder="Enter City Name"
+            placeholder="Search"
             [(ngModel)]="input_city"
             [disabled]="isChecked"
             [ngbTypeahead]="search"
@@ -38,23 +20,6 @@
         </div>
         <div class="invalid-feedback">
             Please provide a valid city.
-        </div>
-    </div>
-
-    <div class="form-group row">
-        <label for="state" class="col-sm-1 col-form-label">State</label>
-        <div class="col-sm-3">
-        <select
-            class="form-control"
-            [(ngModel)]="input_state"
-            name="input_state"
-            [disabled]="isChecked"
-        >
-            <option value="" disabled selected>Select State</option>
-            <option *ngFor="let states of state_array" [ngValue]="states"
-            >{{ states.name }}
-            </option>
-        </select>
         </div>
     </div>
 
@@ -68,11 +33,11 @@
         (click)="checkValue()"
         />
         <label class="form-check-label" for="curloc">
-        Current Location
+        Current location
         </label>
     </div>
 
-    <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="(!isChecked) && (!input_state || !input_city || !input_street)">
+    <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="(!isChecked) && (!input_city)">
         <i class="material-icons md-48">search</i> Search
     </button>
     <button type="submit" class="btn" (click)="onClear()">

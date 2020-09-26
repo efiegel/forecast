@@ -165,12 +165,14 @@ export class SearchComponent implements OnInit {
                 `http_req?url=https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${String(
               term
             )}%26types=(cities)%26language=en%26key=AIzaSyCIQbfVrmF9sxufPX_Dv6pHTrlXRmAs_88`
+            //)}%26types=(cities)%26language=en%26key=AIzaSyCIQbfVrmF9sxufPX_Dv6pHTrlXRmAs_88`
           )
           .pipe(
             map(response => {
               const predictionsData = response['predictions'];
               const predictions = predictionsData.map(data => {
-                return data['structured_formatting']['main_text'];
+                // return data['structured_formatting']['main_text'];
+                return data['description'];
               });
               return predictions;
             })
@@ -199,22 +201,19 @@ export class SearchComponent implements OnInit {
     } else {
       // Use form inputs
       // console.log('use form inputs')
-      this.stateCode = this.state_json[this.input_state['name']];
+      // this.stateCode = this.state_json[this.input_state['name']];
       this.city = this.input_city;
+      // console.log(this.input_city)
       var my_key = 'AIzaSyC0aMY171XD6J1FCarvt_QPABrYP8DL714';
-      var address =
-        encodeURIComponent(this.input_street) +
-        ',+' +
-        encodeURIComponent(this.input_city) +
-        ',+' +
-        encodeURIComponent(this.stateCode);
+      var address = encodeURIComponent(this.input_city);
+      this.stateCode = 'WY';
       var url =
         // 'http://localhost:8081/http_req?url=https://maps.googleapis.com/maps/api/geocode/json?address=' +
         'http_req?url=https://maps.googleapis.com/maps/api/geocode/json?address=' +
         address +
         '%26key=' +
         my_key;
-
+      console.log(url)
       return this.http
         .get(url)
         .toPromise()
