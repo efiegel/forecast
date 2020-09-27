@@ -206,7 +206,7 @@ export class SearchComponent implements OnInit {
       // console.log(this.input_city)
       var my_key = 'AIzaSyC0aMY171XD6J1FCarvt_QPABrYP8DL714';
       var address = encodeURIComponent(this.input_city);
-      this.stateCode = 'WY';
+      // this.stateCode = 'WY';
       var url =
         // 'http://localhost:8081/http_req?url=https://maps.googleapis.com/maps/api/geocode/json?address=' +
         'http_req?url=https://maps.googleapis.com/maps/api/geocode/json?address=' +
@@ -223,9 +223,12 @@ export class SearchComponent implements OnInit {
           this.lon =
             results['results'][0]['geometry']['location']['lng'];
           this.city =
-            results['results'][0]['address_components'][2][
-              'long_name'
-            ]; // 1 = street, 2 = neighborhood, 3 = locality
+            // results['results'][0]['address_components'][2]['long_name'];
+            // results['results'][0]['address_components'][0]['long_name'];
+            results['results'][0]['formatted_address'];
+          this.stateCode = 
+            results['results'][0]['address_components'][3]['short_name'];
+            // 1 = street, 2 = neighborhood, 3 = locality
           // ^ results for city seem to be shifted 1 index from what I expected, i.e. using 1 instead of 2 for locality
           // see example here https://maps.googleapis.com/maps/api/geocode/json?address=happy,+Los%20Angeles,+AL&key=AIzaSyALcxzl0yaxt3NR4QugHZ10PoxTFI7Aj3Q
         });
