@@ -22,8 +22,18 @@
 </div> -->
 
 
+        <!-- style = "
+        background:url(`{seal}`) no-repeat center;
+        background-size: 100%;
+        height: 1200px;" -->
+<!-- background:url('https://www.exp1.com/wp-content/uploads/2020/08/Santa-Monica-Pier-e1597077705511.jpg') no-repeat center; -->
+<!-- [ngStyle]="{background:url('https://www.exp1.com/wp-content/uploads/2020/08/Santa-Monica-Pier-e1597077705511.jpg') no-repeat center}" -->
 <tabset #tabset *ngIf="prog_bar == false">
-    <tab heading="Current">
+    <tab heading="Current" id="current_tab"
+        
+        [style.backgroundImage]="'url('+ seal +')'"
+        
+        >
       <!-- <img src='https://cdn2.iconfinder.com/data/icons/weather-74/24/weather-16-512.png' height="42" width="42"> -->
       <!-- <img src="{{seal}}" height="42" width="42"> -->
 
