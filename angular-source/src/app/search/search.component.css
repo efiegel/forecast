@@ -1,17 +1,14 @@
 #mainform { 
     background-color: rgb(79,146,172);
-    padding: 30px;
+    padding: 20px;
     text-align: left;
-	margin: auto;
-    /* display: table; */
 	color: white;
-	border-radius: 10px;
+	border-radius: 0px;
 }
 
 #resfav { 
-    padding: 30px;
+    padding: 10px;
 	margin: auto;
-    /* display: table; */
 	color: white;
 }
 
@@ -32,6 +29,11 @@
 }
 
 .btn {
-    border: 2px solid black;
-    margin: 20px;
+    border: 1px solid black;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.form-check {
+    margin-top: -10px;
 }
