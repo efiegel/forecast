@@ -29,7 +29,7 @@
 <!-- background:url('https://www.exp1.com/wp-content/uploads/2020/08/Santa-Monica-Pier-e1597077705511.jpg') no-repeat center; -->
 <!-- [ngStyle]="{background:url('https://www.exp1.com/wp-content/uploads/2020/08/Santa-Monica-Pier-e1597077705511.jpg') no-repeat center}" -->
 <tabset #tabset *ngIf="prog_bar == false">
-    <tab heading="Current" id="current_tab"
+    <tab heading="Current" id="current_tab" style='height:75vh; margin-left:10px; margin:10px;'
         
         [style.backgroundImage]="'url('+ seal +')'"
         
@@ -37,34 +37,37 @@
       <!-- <img src='https://cdn2.iconfinder.com/data/icons/weather-74/24/weather-16-512.png' height="42" width="42"> -->
       <!-- <img src="{{seal}}" height="42" width="42"> -->
 
-      <div id='summary_table'>
-			<p style='font-size:32px;line-height: 5px;height: 5px;margin-top: 0px;margin-bottom: 0px;'>{{cur_city}}</p><br>
-            {{cur_tz}}<br>
-            
-            <img src="{{seal}}" height="200" width="200">
-            
-			<p style='font-size:60px; line-height: 5px;height: 5px;margin-top: 40px;margin-bottom: 20px;'>{{cur_temp}} °F </p><br>
-			<p style='font-size:24px;line-height: 5px;height: 5px;margin-top: 0px;margin-bottom: 0px;'>{{cur_status}}</p><br>
-            
-			<table class='summary_status'>
-				<tr>
-					<td><span title='Humidity'><img src='https://cdn2.iconfinder.com/data/icons/weather-74/24/weather-16-512.png' class='icon'></span></td>
-					<td><span title='Pressure'><img src='https://cdn2.iconfinder.com/data/icons/weather-74/24/weather-25-512.png' class='icon'></span></td>
-					<td><span title='Wind Speed'><img src='https://cdn2.iconfinder.com/data/icons/weather-74/24/weather-27-512.png' class='icon'></span></td>
-					<td><span title='Visibility'><img src='https://cdn2.iconfinder.com/data/icons/weather-74/24/weather-30-512.png' class='icon'></span></td>
-					<td><span title='Cloud Cover'><img src='https://cdn2.iconfinder.com/data/icons/weather-74/24/weather-28-512.png' class='icon'></span></td>
-					<td><span title='Ozone'><img src='https://cdn2.iconfinder.com/data/icons/weather-74/24/weather-24-512.png' class='icon'></span></td>
-				</tr>
-				<tr>
-					<td>{{cur_humidity}}</td>
-					<td>{{cur_pressure}}</td>
-					<td>{{cur_wind}}</td>
-					<td>{{cur_visibility}}</td>
-					<td>{{cur_cloud}}</td>
-					<td>{{cur_ozone}}</td>
-				</tr>
-			</table>
-		</div>
+      <div style='height:100%' style='padding-top:50px'>
+    <!-- <div class="justify-content-center h-100"> -->
+        <div id='summary_table'>
+                <p style='font-size:32px;line-height: 5px;height: 5px;margin-top: 30px;margin-bottom: 0px;'>{{cur_city}}</p><br>
+                {{cur_tz}}<br>
+                
+                <!-- <img src="{{seal}}" height="200" width="200"> -->
+                
+                <p style='font-size:60px; line-height: 5px;height: 5px;margin-top: 40px;margin-bottom: 20px;'>{{cur_temp}} °F </p><br>
+                <p style='font-size:24px;line-height: 5px;height: 5px;margin-top: 0px;margin-bottom: 0px;'>{{cur_status}}</p><br>
+                
+                <table class='summary_status'>
+                    <tr>
+                        <td><span title='Humidity'><img src='https://cdn2.iconfinder.com/data/icons/weather-74/24/weather-16-512.png' class='icon'></span></td>
+                        <td><span title='Pressure'><img src='https://cdn2.iconfinder.com/data/icons/weather-74/24/weather-25-512.png' class='icon'></span></td>
+                        <td><span title='Wind Speed'><img src='https://cdn2.iconfinder.com/data/icons/weather-74/24/weather-27-512.png' class='icon'></span></td>
+                        <td><span title='Visibility'><img src='https://cdn2.iconfinder.com/data/icons/weather-74/24/weather-30-512.png' class='icon'></span></td>
+                        <td><span title='Cloud Cover'><img src='https://cdn2.iconfinder.com/data/icons/weather-74/24/weather-28-512.png' class='icon'></span></td>
+                        <td><span title='Ozone'><img src='https://cdn2.iconfinder.com/data/icons/weather-74/24/weather-24-512.png' class='icon'></span></td>
+                    </tr>
+                    <tr>
+                        <td>{{cur_humidity}}</td>
+                        <td>{{cur_pressure}}</td>
+                        <td>{{cur_wind}}</td>
+                        <td>{{cur_visibility}}</td>
+                        <td>{{cur_cloud}}</td>
+                        <td>{{cur_ozone}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
 
 
 
