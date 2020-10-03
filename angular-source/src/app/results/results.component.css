@@ -31,7 +31,17 @@
 	height: 1200px;
 } */
 
+.tab_wrapper {
+	height:100%;
+	padding-top:50px;
+}
+
 #current_tab {
+	/* style='height:100%' style='padding-top:50px' */
 	background: no-repeat center;
 	background-size: cover;
+	height:24vh;
+	height:100%;
+	margin-left:10px;
+	margin:10px;
  }

@@ -9,43 +9,15 @@
   ></div>
 </div>
 
-<!-- <i class="material-icons md-48">search</i>
-<i class="material-icons md-48">clear_all</i> -->
-<!-- <i class="material-icons md-48">star</i>
-<i class="material-icons md-48">star_border</i> -->
-
-<!-- <div *ngIf="prog_bar == false">
-    <table>
-        <td><a class="twitter-share-button" href={{tweet}}><img src={{twitter}} height="40" width="60" ></a></td>
-        <td (click)="setFavorite()"><i class="material-icons md-48">{{favorite}}</i></td>
-    </table>
-</div> -->
-
-
-        <!-- style = "
-        background:url(`{seal}`) no-repeat center;
-        background-size: 100%;
-        height: 1200px;" -->
-<!-- background:url('https://www.exp1.com/wp-content/uploads/2020/08/Santa-Monica-Pier-e1597077705511.jpg') no-repeat center; -->
-<!-- [ngStyle]="{background:url('https://www.exp1.com/wp-content/uploads/2020/08/Santa-Monica-Pier-e1597077705511.jpg') no-repeat center}" -->
 <tabset #tabset *ngIf="prog_bar == false">
-    <tab heading="Current" id="current_tab" style='height:75vh; margin-left:10px; margin:10px;'
-        
-        [style.backgroundImage]="'url('+ seal +')'"
-        
-        >
-      <!-- <img src='https://cdn2.iconfinder.com/data/icons/weather-74/24/weather-16-512.png' height="42" width="42"> -->
-      <!-- <img src="{{seal}}" height="42" width="42"> -->
-
-      <div style='height:100%' style='padding-top:50px'>
-    <!-- <div class="justify-content-center h-100"> -->
-        <div id='summary_table'>
+    <tab heading="Current" id="current_tab" [style.backgroundImage]="'url('+ seal +')'">
+        <div class='tab_wrapper'>
+            <div id='summary_table'>
                 <p style='font-size:32px;line-height: 5px;height: 5px;margin-top: 30px;margin-bottom: 0px;'>{{cur_city}}</p><br>
                 {{cur_tz}}<br>
+            
                 
-                <!-- <img src="{{seal}}" height="200" width="200"> -->
-                
-                <p style='font-size:60px; line-height: 5px;height: 5px;margin-top: 40px;margin-bottom: 20px;'>{{cur_temp}} °F </p><br>
+                <p style='font-size:60px; line-height: 5px;height: 5px;margin-top: 40px;margin-bottom: 20px;'>{{cur_temp}} °F</p><br>
                 <p style='font-size:24px;line-height: 5px;height: 5px;margin-top: 0px;margin-bottom: 0px;'>{{cur_status}}</p><br>
                 
                 <table class='summary_status'>
@@ -68,10 +40,6 @@
                 </table>
             </div>
         </div>
-
-
-
-
     </tab>
 
     <tab heading="Hourly">
@@ -81,7 +49,6 @@
             name="weatherSelect"
             (change) = "makeChart()"
             >
-            <!-- <option value="temperature" selected>Temperature</option> -->
             <option *ngFor="let weather of weather_array" [ngValue]="weather"
                 >{{ weather.name }}
             </option>
@@ -89,7 +56,7 @@
 
         <div>
             <div style="display: table" style="height:30vh; width:60vw; text-align: center">
-                <canvas baseChart width="300" height="200"
+                <canvas baseChart width="100%" height="40%"
                     [datasets]="hr_data"
                     [labels]="hr_labels"
                     [options]="hr_options"
