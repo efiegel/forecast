@@ -2,8 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { forkJoin } from 'rxjs';
-// import { TabsComponent } from './tabs/tabs.component';
-// import { TabModule } from 'angular-tabs-component';
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -34,15 +32,8 @@ export class ResultsComponent implements OnInit {
   cur_cloud;
   cur_ozone;
 
-
-  twitter;
-  tweet;
-  favorite;
-  wishlist;
-
-  stateCode;
   prog_bar;
-  seal;
+  background_image;
   current;
   hourly;
   weekly;
@@ -86,10 +77,6 @@ export class ResultsComponent implements OnInit {
     }
   };
 
-      
-  // yoyo = this;
-  yoyo = 'blahhhh'
-
   // Weekly chart
   openModal_function;
   wk_data;
@@ -128,11 +115,6 @@ export class ResultsComponent implements OnInit {
     },    
   };
 
-  // AIzaSyBRnWd49kEXgp9sf2bJ2xP0xz4KEDVKgKs = API key for custom search
-  // cx = 015445644856242596630:frbn8uolt9t
-  // https://www.googleapis.com/customsearch/v1?q=[STATE]%20State%20Seal&cx=[YOUR_SEARCH_ENGINE_ID]&imgSize=huge&imgType=news&num=1&searchType=image&key=[YOUR_API_KEY]
-  // https://www.googleapis.com/customsearch/v1?q=CA%20State%20Seal&cx=015445644856242596630:frbn8uolt9t&imgSize=huge&imgType=news&num=1&searchType=image&key=AIzaSyBRnWd49kEXgp9sf2bJ2xP0xz4KEDVKgKs
-
   makeChart(){
     this.hr_options = {
       scaleShowVerticalLines: false,
@@ -162,34 +144,13 @@ export class ResultsComponent implements OnInit {
     var data_array = [];
     var i;
 
-    // var time = JSON.parse(sessionStorage.current)['time'];
-    // console.log(time)
-    // var date_obj = new Date(time * 1000);
-    // var h = date_obj.getHours();
     for (i = 0; i < 24; i++) {
       var value = JSON.parse(sessionStorage.current)['hourly']['data'][i][this.weatherSelect['value']]*this.weatherSelect['scalefactor']
       var time = JSON.parse(sessionStorage.current)['hourly']['data'][i]['time']
 
-      // let options = {
-      //   timeZone: JSON.parse(sessionStorage.current)['timezone'],
-      //   year: 'numeric',
-      //   month: 'numeric',
-      //   day: 'numeric',
-      //   hour: 'numeric',
-      //   minute: 'numeric',
-      //   second: 'numeric',
-      // },
-      // formatter = new Intl.DateTimeFormat([], options);
-      // // console.log(formatter.format(new Date()));
-      // var date_obj = formatter.format(new Date(time * 1000));
-
       var date_obj = new Date(time * 1000);
       var hr = date_obj.toLocaleString('en-EN', {hour: '2-digit',   hour12: true, timeZone: JSON.parse(sessionStorage.current)['timezone']})
-      // var hr = date_obj.getHours();
-      // hr = (hr + 11) % 12 + 1;
-      // console.log(time)
 
-      // this.hr_labels.push(String(i))
       this.hr_labels.push(String(hr))
       data_array.push(value);
     }
@@ -208,9 +169,6 @@ export class ResultsComponent implements OnInit {
     var i;
     for (i = 0; i < 7; i++) {
       var day = "day" + String(i)
-      // var time = JSON.parse(sessionStorage.getItem(day))['currently']['time']
-      // var t_low = JSON.parse(sessionStorage.getItem(day))['daily']['data'][0]['temperatureLow']
-      // var t_high = JSON.parse(sessionStorage.getItem(day))['daily']['data'][0]['temperatureHigh']
       var time = JSON.parse(sessionStorage.current)['daily']['data'][i]['time'];
       var t_low = JSON.parse(sessionStorage.current)['daily']['data'][i]['temperatureLow']
       var t_high = JSON.parse(sessionStorage.current)['daily']['data'][i]['temperatureHigh']
@@ -247,109 +205,32 @@ export class ResultsComponent implements OnInit {
     });
   }
 
-  // seriesSelected(selectedItem) {
-  //   console.log(selectedItem)
-  // }
-
-  // selectHandler(selectedItem) {
-  //   console.log(selectedItem)
-  //   alert('A table row was selected');
-  // }
-
-  weatherHTTP(weatherApiUrl, state_code) {
-    // this.prog_bar = true;
-    // const url = `http://localhost:8081/http_req?url=${weatherApiUrl}`;
+  weatherHTTP(weatherApiUrl) {
     const url = `http_req?url=${weatherApiUrl}`;
-    
-    // console.log(url)
-
     var t_day0 = Math.round(new Date().getTime() / 1000); // today
-    // var t_day1 = t_day0 + 1 * 24 * 60 * 60;
-    // var t_day2 = t_day0 + 2 * 24 * 60 * 60;
-    // var t_day3 = t_day0 + 3 * 24 * 60 * 60;
-    // var t_day4 = t_day0 + 4 * 24 * 60 * 60;
-    // var t_day5 = t_day0 + 5 * 24 * 60 * 60;
-    // var t_day6 = t_day0 + 6 * 24 * 60 * 60;
-
-    // note location right now is localhost8081, but will probably have to change to URL on AWS
     let current = this.http.get(url);
-    // let day0 = this.http.get(`${url},${String(t_day0)}`);
-    // let day1 = this.http.get(`${url},${String(t_day1)}`);
-    // let day2 = this.http.get(`${url},${String(t_day2)}`);
-    // let day3 = this.http.get(`${url},${String(t_day3)}`);
-    // let day4 = this.http.get(`${url},${String(t_day4)}`);
-    // let day5 = this.http.get(`${url},${String(t_day5)}`);
-    // let day6 = this.http.get(`${url},${String(t_day6)}`);
-    // console.log(state_code)
-    // var seal_url = `http://localhost:8081/http_req?url=https://www.googleapis.com/customsearch/v1?q=${String(state_code)}%20State%20Seal%26cx=015445644856242596630:frbn8uolt9t%26imgSize=huge%26imgType=news%26num=1%26searchType=image%26key=AIzaSyBDublwvjEnfwS2njzo9L__2fF3ZZ0w_IY`
-    // var seal_url = `http_req?url=https://www.googleapis.com/customsearch/v1?q=${String(state_code)}%20State%20Seal%26cx=015445644856242596630:frbn8uolt9t%26imgSize=huge%26num=1%26searchType=image%26key=AIzaSyBDublwvjEnfwS2njzo9L__2fF3ZZ0w_IY`
 
-    var seal_url = `http_req?url=https://www.googleapis.com/customsearch/v1?q=${String(sessionStorage.city)}%26cx=015445644856242596630:frbn8uolt9t%26imgSize=huge%26num=1%26searchType=image%26key=AIzaSyBDublwvjEnfwS2njzo9L__2fF3ZZ0w_IY`
-    // return this.http.get(seal_url).toPromise().then(result => console.log('result', result))
-
-    // SET THIS BACK SEPT
-    console.log('check this seal url')
-    console.log(seal_url)
-    var seal = this.http.get(seal_url);
-    // var seal = 'yo'
+    var background_image_url = `http_req?url=https://www.googleapis.com/customsearch/v1?q=${String(sessionStorage.city)}%26cx=015445644856242596630:frbn8uolt9t%26imgSize=huge%26num=1%26searchType=image%26key=AIzaSyBDublwvjEnfwS2njzo9L__2fF3ZZ0w_IY`
+    var background_image = this.http.get(background_image_url);
     
     return forkJoin([
       current,
-      // day0,
-      // day1,
-      // day2,
-      // day3,
-      // day4,
-      // day5,
-      // day6,
-      seal
+      background_image
     ])
     .toPromise()
     .then(results => {
-      // console.log('results', results);
       sessionStorage.setItem('current', JSON.stringify(results[0])); // could be localStorage.setItem(...);
-      // sessionStorage.setItem('day0', JSON.stringify(results[1]));
-      // sessionStorage.setItem('day1', JSON.stringify(results[2]));
-      // sessionStorage.setItem('day2', JSON.stringify(results[3]));
-      // sessionStorage.setItem('day3', JSON.stringify(results[4]));
-      // sessionStorage.setItem('day4', JSON.stringify(results[5]));
-      // sessionStorage.setItem('day5', JSON.stringify(results[6]));
-      // sessionStorage.setItem('day6', JSON.stringify(results[7]));
-      // console.log(results[0]);
-      // sessionStorage.setItem('seal', JSON.stringify(results[0])); // NEED TO MAKE FIRST 0 AN 8
-      // sessionStorage.setItem('seal', JSON.stringify(results[0]['items'][0]['link'])); // NEED TO MAKE FIRST 0 AN 8
-      
-      // SET THIS BACK SEPT
-      sessionStorage.setItem('seal', String(results[1]['items'][0]['link'])); // NEED TO MAKE FIRST 0 AN 8
-      // sessionStorage.setItem('seal', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Seal_of_New_York.svg/2000px-Seal_of_New_York.svg.png');
-      // this.prog_bar = false;
+      sessionStorage.setItem('background_image', String(results[1]['items'][0]['link'])); // NEED TO MAKE FIRST 0 AN 8
     });
   }
 
-  async getWeather(weatherApiUrl, state_code) {
+  async getWeather(weatherApiUrl) {
     this.prog_bar = true;
-    // console.log(state_code)
-    // console.log('before weatherHTTP')
-    // REAL VALUE BUT MAXES OUT API CALLS DURING DEBUGGING
-    await this.weatherHTTP(weatherApiUrl, state_code);
-    
-    // console.log('after weatherHTTP')
+    await this.weatherHTTP(weatherApiUrl);
 
-
-    // HARDCODED JSON FOR TESTING
-    // LA https://api.darksky.net/forecast/52431f2a8bae2608e2e97cf1e1cf199c/34.0308,-118.473
-    // TIME FOR CURRENT JSON OBJ 1573935180
-
-    // sessionStorage.setItem('current', json_current);
-    // sessionStorage.setItem('seal', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Seal_of_New_York.svg/2000px-Seal_of_New_York.svg.png');
-    
-    this.seal = sessionStorage.seal;
+    this.background_image = sessionStorage.background_image;
     this.current = sessionStorage.current;
-    // console.log('this.seal', this.seal);
-
     this.prog_bar = false;
-    // var current = JSON.parse(sessionStorage.current);
-    // console.log(current)
 
     var current_weather_obj = JSON.parse(sessionStorage.current);
     this.cur_temp = Math.round(current_weather_obj['currently']['temperature']);
@@ -363,69 +244,14 @@ export class ResultsComponent implements OnInit {
     this.cur_cloud = current_weather_obj['currently']['cloudCover']
     this.cur_ozone = current_weather_obj['currently']['ozone']
 
-    var msg = "The current temperature at " + String(this.cur_city) + " is " + String(this.cur_temp) + "°F. The weather conditions are " + String(this.cur_status) + ". #CSCI571WeatherSearch"
-    this.tweet = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(msg);
-
     this.makeChart()
     this.makeWeeklyChart()
   }
 
-  setFavorite() {
-    // console.log("got clicked")
-    var not_in_favs = true;
-    var favorites_data = JSON.parse(sessionStorage.favorites).data;
-    var i = 0;
-    while((i < favorites_data.length) && (not_in_favs == true)){
-      {
-        if((favorites_data[i]['city'] == sessionStorage.city) && (favorites_data[i]['state'] == sessionStorage.stateCode)){
-          not_in_favs = false;
-        }
-        i++
-      }
-    }
-
-    if (not_in_favs) {
-      this.favorite = 'star';
-      var favorites = JSON.parse(sessionStorage.favorites);
-      // console.log(favorites)
-      favorites.data.push({'id': favorites.data.length + 1, 'image': sessionStorage.seal, 'city': sessionStorage.city, 'state': sessionStorage.stateCode, 'wishlist': 'restore_from_trash', 'link': sessionStorage.thisLink});
-      sessionStorage.favorites = JSON.stringify(favorites)
-    }
-  }
-
-  ngOnInit() {
-
-    this.twitter = 'https://cfcdnpull-creativefreedoml.netdna-ssl.com/wp-content/uploads/2017/06/Twitter-featured.png';
-    
-    var not_in_favs = true;
-    var favorites_data = JSON.parse(sessionStorage.favorites).data;
-    var i = 0;
-    while((i < favorites_data.length) && (not_in_favs == true)){
-      {
-        if((favorites_data[i]['city'] == sessionStorage.city) && (favorites_data[i]['state'] == sessionStorage.stateCode)){
-          not_in_favs = false;
-        }
-        i++
-      }
-    }
-
-    if (not_in_favs == true){
-      this.favorite = 'star_border';
-    } else {
-      this.favorite = 'star';
-    }
-      
+  ngOnInit() {      
     this.activatedRoute.queryParams.subscribe(params => {
       const url = params['url'];
-      // console.log('is this url trouble?')
-      // console.log(url)
-      // const state_code = 'CA'
-      // NEED TO GET STATE CODE IN HERE FROM this.state_json[this.input_state['name']]
-      this.getWeather(url, sessionStorage.stateCode);
-      // this.makeChart()
-      // this.makeWeeklyChart()
-      // this.stateCode = sessionStorage.stateCode;
-      // console.log('state', this.stateCode);
+      this.getWeather(url);
     });
 
     (this.wk_options as any).onClick = (event, item) => {
@@ -441,7 +267,6 @@ export class ResultsComponent implements OnInit {
         'partly-cloudy-day': 'https://cdn2.iconfinder.com/data/icons/weather-74/24/weather-02-512.png',
         'partly-cloudy-night': 'https://cdn2.iconfinder.com/data/icons/weather-74/24/weather-02-512.png'
       }
-      // var data = JSON.parse(sessionStorage.getItem('day' + String(item[0]['_index'])))
       var data = JSON.parse(sessionStorage.current)['daily']['data'][item[0]['_index']];
       var prec_val = "Heavy";
       if (data["precipIntensity"] <=0.001 ) {
@@ -468,9 +293,6 @@ export class ResultsComponent implements OnInit {
         'humidity': Math.round(data["humidity"]*100),
         'visibility': data["visibility"]
     }
-      // console.log(item);
-      // console.log(sessionStorage.current)
-      // this.openModal(item[0]['_model'].label);
       this.openModal(info);
     }
   }

@@ -26,7 +26,7 @@
 
 /* #current_tab {
 	background:url("http://dummyimage.com/3375x2000/ebb0eb/f0f7fa.jpg") no-repeat center;
-	background:url("{{seal}}") no-repeat center;
+	background:url("{{background_image}}") no-repeat center;
 	background-size: 100%;
 	height: 1200px;
 } */
