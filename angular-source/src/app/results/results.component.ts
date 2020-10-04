@@ -210,7 +210,7 @@ export class ResultsComponent implements OnInit {
     let current = this.http.get(url);
 
     var background_image_url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Mount_Rushmore_Closeup_2017.jpg/299px-Mount_Rushmore_Closeup_2017.jpg'
-    // var background_image_url = `http_req?url=https://www.googleapis.com/customsearch/v1?q=${String(this.cur_city)}%26cx=015445644856242596630:frbn8uolt9t%26imgSize=huge%26num=1%26searchType=image%26key=AIzaSyBDublwvjEnfwS2njzo9L__2fF3ZZ0w_IY`
+    // var background_image_url = `http_req?url=https://www.googleapis.com/customsearch/v1?q=${String(this.cur_city)}%26cx=015445644856242596630:frbn8uolt9t%26imgSize=huge%26num=1%26searchType=image%26key=CUSTOMSEARCH_API_KEY`
     // var background_image = this.http.get(background_image_url);
     
     return forkJoin([

@@ -7,27 +7,36 @@ const request = require('request');
 //Starting Express app
 const app = express();
 
+// Import API keys
+const fs = require('fs');
+let data = fs.readFileSync('api_keys/keys.json');
+let autocomplete_api_key = JSON.parse(data)['autocomplete'];
+let customsearch_api_key = JSON.parse(data)['customsearch'];
+let darksky_api_key = JSON.parse(data)['darksky'];
+let geocode_api_key = JSON.parse(data)['geocode'];
+
 //Set the base path to the forecast dist folder
 app.use(express.static(path.join(__dirname, 'angular-source/dist/forecast')));
 // app.use(express.static(path.join(__dirname, 'angular-source/src/index.html')));
 app.use(cors());
 
 app.get('/http_req', function(req, res) {
-    // const url = req.param('url');
+    let input_url = (req.query.url || req.body.url || req.params.url);
+    let url = ''
 
-    const url = req.query.url || req.body.url || req.params.url;
-
-    // console.log(req.params)
-    // console.log(res)
-    // const url = req.params.url
-    // const url = req.uri
-    // console.log(url);
+    if (input_url.includes('AUTOCOMPLETE_API_KEY')) {
+      url = input_url.replace('AUTOCOMPLETE_API_KEY', autocomplete_api_key);
+    } else if (input_url.includes('CUSTOMSEARCH_API_KEY')) {
+      url = input_url.replace('CUSTOMSEARCH_API_KEY', customsearch_api_key);
+    } else if (input_url.includes('DARKSKY_API_KEY')) {
+      url = input_url.replace('DARKSKY_API_KEY', darksky_api_key);
+    } else if (input_url.includes('GEOCODE_API_KEY')) {
+      url = input_url.replace('GEOCODE_API_KEY', geocode_api_key);
+    } else {
+      url = input_url;
+    }
 
     request.get(url, function (error, response, body) {
-        console.log(url)
-        console.log('ERR', error)
-        // console.log('RES', response)
-        // console.log('BODY', body)
         if (!error && response.statusCode == 200) {
           var info = JSON.parse(body)
           res.send(info);
