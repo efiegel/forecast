@@ -5,21 +5,25 @@ import { Observable, forkJoin } from 'rxjs';
 import {
   debounceTime,
   distinctUntilChanged,
-  map
+  map,
+  switchMap
 } from 'rxjs/operators';
 import { FormControl, FormBuilder, Validators } from '@angular/forms';
-import { switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { DataService } from '../data.service'
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css']
 })
+
 export class SearchComponent implements OnInit {
-  constructor(private http: HttpClient, private router: Router, private formBuilder: FormBuilder) {}
+  constructor(private http: HttpClient, private router: Router, private formBuilder: FormBuilder, private dataService: DataService) {}
 
   myControl = new FormControl();
+
+  theData;
 
   activeTab;
   lat;
@@ -89,14 +93,15 @@ export class SearchComponent implements OnInit {
     };
     await this.validate();
 
-    sessionStorage.setItem('city', this.city);
+    this.dataService.location.next(this.city);
+
     const baseWeatherUrl = `https://api.darksky.net/forecast/e4433104dfed88d14141beeb380c7258/${String(
       this.lat
     )},${String(this.lon)}`;
 
     this.activeTab = 'results';
     this.router.navigate([`/results`], {
-      queryParams: { url: baseWeatherUrl }
+      queryParams: {url: baseWeatherUrl}
     });
   }
 

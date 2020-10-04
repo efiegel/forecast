@@ -18,17 +18,7 @@ import { ChartsModule } from 'ng2-charts';
 
 import { ModalModule } from 'ngx-bootstrap/modal';
 
-// import { BsModalService } from 'ngx-bootstrap/modal';
-// import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-
-// import { TabModule } from 'angular-tabs-component';
-// import { MatTabsModule } from '@angular/material/tabs';
- 
-// import { NgbdTypeaheadBasic } from './app.component';
-
-// import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-// import { MatAutocompleteModule, MatInputModule } from '@angular/material';
-// import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { DataService } from './data.service';
 
 @NgModule({
   declarations: [
@@ -49,9 +39,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     ChartsModule,
     ModalModule.forRoot()
   ],
-  providers: [],
+  providers: [DataService],
   bootstrap: [AppComponent],
   entryComponents: [ DailyModalComponent ]
 })
 export class AppModule {}
-// export class NgbdTypeaheadBasicModule {}

@@ -6,6 +6,7 @@ import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { DailyModalComponent } from '../daily-modal/daily-modal.component';
+import { DataService } from '../data.service'
 
 @Component({
   selector: 'app-results',
@@ -16,7 +17,8 @@ export class ResultsComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private http: HttpClient,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private dataService: DataService
   ) {}
 
   @(ViewChild as any)('tabset') tabset: TabsetComponent;
@@ -207,10 +209,9 @@ export class ResultsComponent implements OnInit {
 
   weatherHTTP(weatherApiUrl) {
     const url = `http_req?url=${weatherApiUrl}`;
-    var t_day0 = Math.round(new Date().getTime() / 1000); // today
     let current = this.http.get(url);
 
-    var background_image_url = `http_req?url=https://www.googleapis.com/customsearch/v1?q=${String(sessionStorage.city)}%26cx=015445644856242596630:frbn8uolt9t%26imgSize=huge%26num=1%26searchType=image%26key=AIzaSyBDublwvjEnfwS2njzo9L__2fF3ZZ0w_IY`
+    var background_image_url = `http_req?url=https://www.googleapis.com/customsearch/v1?q=${String(this.cur_city)}%26cx=015445644856242596630:frbn8uolt9t%26imgSize=huge%26num=1%26searchType=image%26key=AIzaSyBDublwvjEnfwS2njzo9L__2fF3ZZ0w_IY`
     var background_image = this.http.get(background_image_url);
     
     return forkJoin([
@@ -234,7 +235,7 @@ export class ResultsComponent implements OnInit {
 
     var current_weather_obj = JSON.parse(sessionStorage.current);
     this.cur_temp = Math.round(current_weather_obj['currently']['temperature']);
-    this.cur_city = sessionStorage.city;
+    // this.cur_city = sessionStorage.city;
     this.cur_tz = current_weather_obj['timezone']
     this.cur_status = current_weather_obj['currently']['summary']
     this.cur_humidity = current_weather_obj['currently']['humidity']
@@ -248,7 +249,11 @@ export class ResultsComponent implements OnInit {
     this.makeWeeklyChart()
   }
 
-  ngOnInit() {      
+  ngOnInit() {   
+    this.dataService.location.subscribe(data => {
+      this.cur_city = data
+    });
+    
     this.activatedRoute.queryParams.subscribe(params => {
       const url = params['url'];
       this.getWeather(url);
@@ -283,7 +288,7 @@ export class ResultsComponent implements OnInit {
 
       var info = {
         'date': item[0]['_model'].label,
-        'city': sessionStorage.city,
+        'city': this.cur_city,//sessionStorage.city,
         'temp': Math.round(data["temperatureHigh"]),
         'status': data["summary"],
         'icon': symbols[data["icon"]],
