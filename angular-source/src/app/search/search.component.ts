@@ -14,7 +14,12 @@ import { DataService } from '../data.service'
 })
 
 export class SearchComponent implements OnInit {
-  constructor(private http: HttpClient, private router: Router, private formBuilder: FormBuilder, private dataService: DataService) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private dataService: DataService
+  ) {}
 
   myControl = new FormControl();
 
@@ -32,7 +37,7 @@ export class SearchComponent implements OnInit {
       switchMap(term =>
         this.http
           .get(`http_req?url=https://maps.googleapis.com/maps/api/place/autocomplete/json?input=
-          ${String(term)}%26types=(cities)%26language=en%26key=AUTOCOMPLETE_API_KEY`
+            ${String(term)}%26types=(cities)%26language=en%26key=AUTOCOMPLETE_API_KEY`
           )
           .pipe(
             map(response => {
@@ -60,7 +65,7 @@ export class SearchComponent implements OnInit {
         });
     } else {
       this.city = this.input_city;
-      var address = encodeURIComponent(this.input_city);
+      var address = encodeURIComponent(this.city);
       var url = 'http_req?url=https://maps.googleapis.com/maps/api/geocode/json?address=' + address + '%26key=GEOCODE_API_KEY';
       
       return this.http
@@ -83,13 +88,11 @@ export class SearchComponent implements OnInit {
         'Content-Type': 'application/json'
       })
     };
+    
     await this.validate();
 
     this.dataService.location.next(this.city);
-    //e4433104dfed88d14141beeb380c7258
-    const baseWeatherUrl = `https://api.darksky.net/forecast/DARKSKY_API_KEY/${String(
-      this.lat
-    )},${String(this.lon)}`;
+    const baseWeatherUrl = `https://api.darksky.net/forecast/DARKSKY_API_KEY/${String(this.lat)},${String(this.lon)}`;
 
     this.activeTab = 'results';
     this.router.navigate([`/results`], {

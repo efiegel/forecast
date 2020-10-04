@@ -13,12 +13,12 @@
     <tab heading="Current" id="current_tab" [style.backgroundImage]="'url('+ background_image +')'">
         <div class='tab_wrapper'>
             <div id='summary_table'>
-                <p style='font-size:32px;line-height: 5px;height: 5px;margin-top: 30px;margin-bottom: 0px;'>{{cur_city}}</p><br>
-                {{cur_tz}}<br>
+                <p style='font-size:32px;line-height: 5px;height: 5px;margin-top: 30px;margin-bottom: 0px;'>{{city}}</p><br>
+                {{tz}}<br>
             
                 
-                <p style='font-size:60px; line-height: 5px;height: 5px;margin-top: 40px;margin-bottom: 20px;'>{{cur_temp}} °F</p><br>
-                <p style='font-size:24px;line-height: 5px;height: 5px;margin-top: 0px;margin-bottom: 0px;'>{{cur_status}}</p><br>
+                <p style='font-size:60px; line-height: 5px;height: 5px;margin-top: 40px;margin-bottom: 20px;'>{{temp}} °F</p><br>
+                <p style='font-size:24px;line-height: 5px;height: 5px;margin-top: 0px;margin-bottom: 0px;'>{{status}}</p><br>
                 
                 <table class='summary_status'>
                     <tr>
@@ -30,12 +30,12 @@
                         <td><span title='Ozone'><img src='https://cdn2.iconfinder.com/data/icons/weather-74/24/weather-24-512.png' class='icon'></span></td>
                     </tr>
                     <tr>
-                        <td>{{cur_humidity}}</td>
-                        <td>{{cur_pressure}}</td>
-                        <td>{{cur_wind}}</td>
-                        <td>{{cur_visibility}}</td>
-                        <td>{{cur_cloud}}</td>
-                        <td>{{cur_ozone}}</td>
+                        <td>{{humidity}}</td>
+                        <td>{{pressure}}</td>
+                        <td>{{wind}}</td>
+                        <td>{{visibility}}</td>
+                        <td>{{cloud}}</td>
+                        <td>{{ozone}}</td>
                     </tr>
                 </table>
             </div>
@@ -47,7 +47,7 @@
             class="form-control"
             [(ngModel)]="weatherSelect"
             name="weatherSelect"
-            (change) = "makeChart()"
+            (change) = "makeHourlyChart()"
             >
             <option *ngFor="let weather of weather_array" [ngValue]="weather"
                 >{{ weather.name }}
@@ -71,11 +71,11 @@
         <div>
             <div style="display: block" style="height:30vh; width:60vw; text-align: center">
                 <canvas baseChart width="300" height="200"
-                    [datasets]="wk_data"
-                    [labels]="wk_labels"
-                    [options]="wk_options"
-                    [legend]="wk_legend"
-                    [chartType]="wk_type">
+                    [datasets]="daily_data"
+                    [labels]="daily_labels"
+                    [options]="daily_options"
+                    [legend]="daily_legend"
+                    [chartType]="daily_type">
                 </canvas>
             </div>
         </div>

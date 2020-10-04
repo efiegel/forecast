@@ -23,20 +23,20 @@ export class ResultsComponent implements OnInit {
 
   @(ViewChild as any)('tabset') tabset: TabsetComponent;
 
-  cur_temp;
-  cur_city;
-  cur_tz;
-  cur_status;
-  cur_humidity;
-  cur_pressure;
-  cur_wind;
-  cur_visibility;
-  cur_cloud;
-  cur_ozone;
+  temp;
+  city;
+  tz;
+  status;
+  humidity;
+  pressure;
+  wind;
+  visibility;
+  cloud;
+  ozone;
 
   prog_bar;
   background_image;
-  current;
+  weather_data;
   hourly;
   weekly;
 
@@ -79,14 +79,14 @@ export class ResultsComponent implements OnInit {
     }
   };
 
-  // Weekly chart
+  // Daily chart
   openModal_function;
-  wk_data;
-  wk_labels;
-  wk_legend;
-  wk_type;
-  wk_title;
-  wk_options = {
+  daily_data;
+  daily_labels;
+  daily_legend;
+  daily_type;
+  daily_title;
+  daily_options = {
     scaleShowVerticalLines: false,
     responsive: true,
     scales: {
@@ -94,7 +94,7 @@ export class ResultsComponent implements OnInit {
         display: true,
         scaleLabel: {
           display: true,
-          labelString: 'Temperature in Farenheit'
+          labelString: 'Temperature (Farenheit)'
         }
       }],
       yAxes: [{
@@ -117,7 +117,7 @@ export class ResultsComponent implements OnInit {
     },    
   };
 
-  makeChart(){
+  makeHourlyChart(){
     this.hr_options = {
       scaleShowVerticalLines: false,
       responsive: true,
@@ -146,43 +146,49 @@ export class ResultsComponent implements OnInit {
     var data_array = [];
     var i;
 
+    var hourly = JSON.parse(this.weather_data)['hourly']['data']
+
     for (i = 0; i < 24; i++) {
-      var value = JSON.parse(this.current)['hourly']['data'][i][this.weatherSelect['value']]*this.weatherSelect['scalefactor']//JSON.parse(sessionStorage.current)['hourly']['data'][i][this.weatherSelect['value']]*this.weatherSelect['scalefactor']
-      var time = JSON.parse(this.current)['hourly']['data'][i]['time']//JSON.parse(sessionStorage.current)['hourly']['data'][i]['time']
+      var value = hourly[i][this.weatherSelect['value']]*this.weatherSelect['scalefactor']
+      var time = hourly[i]['time']
       var date_obj = new Date(time * 1000);
-      var hr = date_obj.toLocaleString('en-EN', {hour: '2-digit',   hour12: true, timeZone: JSON.parse(this.current)['timezone']})
+      var hr = date_obj.toLocaleString('en-EN', {hour: '2-digit',   hour12: true, timeZone: this.tz})
 
       this.hr_labels.push(String(hr))
       data_array.push(value);
     }
+    
     this.hr_data = [
       {data: data_array, label: this.weatherSelect['name']}
     ];
   }
 
-  makeWeeklyChart(){
-    this.wk_type = 'horizontalBar';
-    this.wk_legend = true;
-    this.wk_labels = []
-    this.wk_title = this.weatherSelect['name'];
-    this.wk_data = []
+  makeDailyChart(){
+    this.daily_type = 'horizontalBar';
+    this.daily_legend = true;
+    this.daily_labels = []
+    this.daily_title = this.weatherSelect['name'];
+    this.daily_data = []
     var data_array = [];
+    var daily = JSON.parse(this.weather_data)['daily']['data'];
     var i;
+
+
     for (i = 0; i < 7; i++) {
-      var time = JSON.parse(this.current)['daily']['data'][i]['time']
-      var t_low = JSON.parse(this.current)['daily']['data'][i]['temperatureLow']
-      var t_high = JSON.parse(this.current)['daily']['data'][i]['temperatureHigh']
+      var time = daily[i]['time']
+      var t_low = daily[i]['temperatureLow']
+      var t_high = daily[i]['temperatureHigh']
       var date_obj = new Date(time * 1000);
       var d = date_obj.getDate();
       var m = date_obj.getMonth();
       var y = date_obj.getFullYear();
       var date = String(m + 1) + '/' + String(d) + '/' + String(y);      
-      this.wk_labels.push(date)
+      this.daily_labels.push(date)
       data_array.push([t_low, t_high]);
     }
 
-    this.wk_data = [
-      {data: data_array, label: 'Day wise temperature range'}
+    this.daily_data = [
+      {data: data_array, label: 'Daily temperature range'}
     ];        
   }
 
@@ -207,14 +213,14 @@ export class ResultsComponent implements OnInit {
 
   weatherHTTP(weatherApiUrl) {
     const url = `http_req?url=${weatherApiUrl}`;
-    let current = this.http.get(url);
+    let weather = this.http.get(url);
 
     var background_image_url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Mount_Rushmore_Closeup_2017.jpg/299px-Mount_Rushmore_Closeup_2017.jpg'
-    // var background_image_url = `http_req?url=https://www.googleapis.com/customsearch/v1?q=${String(this.cur_city)}%26cx=015445644856242596630:frbn8uolt9t%26imgSize=huge%26num=1%26searchType=image%26key=CUSTOMSEARCH_API_KEY`
+    // var background_image_url = `http_req?url=https://www.googleapis.com/customsearch/v1?q=${String(this.city)}%26cx=015445644856242596630:frbn8uolt9t%26imgSize=huge%26num=1%26searchType=image%26key=CUSTOMSEARCH_API_KEY`
     // var background_image = this.http.get(background_image_url);
     
     return forkJoin([
-      current//,
+      weather//,
       // background_image
     ])
     .toPromise()
@@ -229,31 +235,31 @@ export class ResultsComponent implements OnInit {
     await this.weatherHTTP(weatherApiUrl);
     this.prog_bar = false;
 
-    var current_weather_obj = JSON.parse(this.current);
-    this.cur_temp = Math.round(current_weather_obj['currently']['temperature']);
-    this.cur_tz = current_weather_obj['timezone']
-    this.cur_status = current_weather_obj['currently']['summary']
-    this.cur_humidity = current_weather_obj['currently']['humidity']
-    this.cur_pressure = current_weather_obj['currently']['pressure']
-    this.cur_wind = current_weather_obj['currently']['windSpeed']
-    this.cur_visibility = current_weather_obj['currently']['visibility']
-    this.cur_cloud = current_weather_obj['currently']['cloudCover']
-    this.cur_ozone = current_weather_obj['currently']['ozone']
+    var data = JSON.parse(this.weather_data);
+    this.temp = Math.round(data['currently']['temperature']);
+    this.tz = data['timezone']
+    this.status = data['currently']['summary']
+    this.humidity = data['currently']['humidity']
+    this.pressure = data['currently']['pressure']
+    this.wind = data['currently']['windSpeed']
+    this.visibility = data['currently']['visibility']
+    this.cloud = data['currently']['cloudCover']
+    this.ozone = data['currently']['ozone']
 
-    this.makeChart()
-    this.makeWeeklyChart()
+    this.makeHourlyChart()
+    this.makeDailyChart()
   }
 
   ngOnInit() {   
     this.dataService.location.subscribe(data => {
-      this.cur_city = data
+      this.city = data
     });
 
     this.dataService.background.subscribe(data => {
       this.background_image= data
     });
     this.dataService.weather.subscribe(data => {
-      this.current = data
+      this.weather_data = data
     });
     
     this.activatedRoute.queryParams.subscribe(params => {
@@ -261,7 +267,8 @@ export class ResultsComponent implements OnInit {
       this.getWeather(url);
     });
 
-    (this.wk_options as any).onClick = (event, item) => {
+    // Modal definition (popup from daily chart tab)
+    (this.daily_options as any).onClick = (event, item) => {
       var symbols = {
         'clear-day': 'https://cdn2.iconfinder.com/data/icons/weather-74/24/weather-12-512.png', 
         'clear-night': 'https://cdn2.iconfinder.com/data/icons/weather-74/24/weather-12-512.png',
@@ -275,7 +282,7 @@ export class ResultsComponent implements OnInit {
         'partly-cloudy-night': 'https://cdn2.iconfinder.com/data/icons/weather-74/24/weather-02-512.png'
       }
 
-      var data = JSON.parse(this.current)['daily']['data'][item[0]['_index']];
+      var data = JSON.parse(this.weather_data)['daily']['data'][item[0]['_index']];
       var prec_val = "Heavy";
       if (data["precipIntensity"] <=0.001 ) {
 				prec_val = "0";
@@ -291,12 +298,12 @@ export class ResultsComponent implements OnInit {
 
       var info = {
         'date': item[0]['_model'].label,
-        'city': this.cur_city,
+        'city': this.city,
         'temp': Math.round(data["temperatureHigh"]),
         'status': data["summary"],
         'icon': symbols[data["icon"]],
         'precip': prec_val,
-        'chance': data["precipIntensity"]*100,
+        'chance': Math.round(data["precipProbability"]*100),
         'wind': data["windSpeed"],
         'humidity': Math.round(data["humidity"]*100),
         'visibility': data["visibility"]
