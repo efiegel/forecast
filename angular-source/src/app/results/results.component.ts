@@ -147,11 +147,10 @@ export class ResultsComponent implements OnInit {
     var i;
 
     for (i = 0; i < 24; i++) {
-      var value = JSON.parse(sessionStorage.current)['hourly']['data'][i][this.weatherSelect['value']]*this.weatherSelect['scalefactor']
-      var time = JSON.parse(sessionStorage.current)['hourly']['data'][i]['time']
-
+      var value = JSON.parse(this.current)['hourly']['data'][i][this.weatherSelect['value']]*this.weatherSelect['scalefactor']//JSON.parse(sessionStorage.current)['hourly']['data'][i][this.weatherSelect['value']]*this.weatherSelect['scalefactor']
+      var time = JSON.parse(this.current)['hourly']['data'][i]['time']//JSON.parse(sessionStorage.current)['hourly']['data'][i]['time']
       var date_obj = new Date(time * 1000);
-      var hr = date_obj.toLocaleString('en-EN', {hour: '2-digit',   hour12: true, timeZone: JSON.parse(sessionStorage.current)['timezone']})
+      var hr = date_obj.toLocaleString('en-EN', {hour: '2-digit',   hour12: true, timeZone: JSON.parse(this.current)['timezone']})
 
       this.hr_labels.push(String(hr))
       data_array.push(value);
@@ -170,10 +169,9 @@ export class ResultsComponent implements OnInit {
     var data_array = [];
     var i;
     for (i = 0; i < 7; i++) {
-      var day = "day" + String(i)
-      var time = JSON.parse(sessionStorage.current)['daily']['data'][i]['time'];
-      var t_low = JSON.parse(sessionStorage.current)['daily']['data'][i]['temperatureLow']
-      var t_high = JSON.parse(sessionStorage.current)['daily']['data'][i]['temperatureHigh']
+      var time = JSON.parse(this.current)['daily']['data'][i]['time']
+      var t_low = JSON.parse(this.current)['daily']['data'][i]['temperatureLow']
+      var t_high = JSON.parse(this.current)['daily']['data'][i]['temperatureHigh']
       var date_obj = new Date(time * 1000);
       var d = date_obj.getDate();
       var m = date_obj.getMonth();
@@ -211,31 +209,28 @@ export class ResultsComponent implements OnInit {
     const url = `http_req?url=${weatherApiUrl}`;
     let current = this.http.get(url);
 
-    var background_image_url = `http_req?url=https://www.googleapis.com/customsearch/v1?q=${String(this.cur_city)}%26cx=015445644856242596630:frbn8uolt9t%26imgSize=huge%26num=1%26searchType=image%26key=AIzaSyBDublwvjEnfwS2njzo9L__2fF3ZZ0w_IY`
-    var background_image = this.http.get(background_image_url);
+    var background_image_url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Mount_Rushmore_Closeup_2017.jpg/299px-Mount_Rushmore_Closeup_2017.jpg'
+    // var background_image_url = `http_req?url=https://www.googleapis.com/customsearch/v1?q=${String(this.cur_city)}%26cx=015445644856242596630:frbn8uolt9t%26imgSize=huge%26num=1%26searchType=image%26key=AIzaSyBDublwvjEnfwS2njzo9L__2fF3ZZ0w_IY`
+    // var background_image = this.http.get(background_image_url);
     
     return forkJoin([
-      current,
-      background_image
+      current//,
+      // background_image
     ])
     .toPromise()
     .then(results => {
-      sessionStorage.setItem('current', JSON.stringify(results[0])); // could be localStorage.setItem(...);
-      sessionStorage.setItem('background_image', String(results[1]['items'][0]['link'])); // NEED TO MAKE FIRST 0 AN 8
+      this.dataService.weather.next(JSON.stringify(results[0]));
+      this.dataService.background.next(background_image_url);
     });
   }
 
   async getWeather(weatherApiUrl) {
     this.prog_bar = true;
     await this.weatherHTTP(weatherApiUrl);
-
-    this.background_image = sessionStorage.background_image;
-    this.current = sessionStorage.current;
     this.prog_bar = false;
 
-    var current_weather_obj = JSON.parse(sessionStorage.current);
+    var current_weather_obj = JSON.parse(this.current);
     this.cur_temp = Math.round(current_weather_obj['currently']['temperature']);
-    // this.cur_city = sessionStorage.city;
     this.cur_tz = current_weather_obj['timezone']
     this.cur_status = current_weather_obj['currently']['summary']
     this.cur_humidity = current_weather_obj['currently']['humidity']
@@ -252,6 +247,13 @@ export class ResultsComponent implements OnInit {
   ngOnInit() {   
     this.dataService.location.subscribe(data => {
       this.cur_city = data
+    });
+
+    this.dataService.background.subscribe(data => {
+      this.background_image= data
+    });
+    this.dataService.weather.subscribe(data => {
+      this.current = data
     });
     
     this.activatedRoute.queryParams.subscribe(params => {
@@ -272,7 +274,8 @@ export class ResultsComponent implements OnInit {
         'partly-cloudy-day': 'https://cdn2.iconfinder.com/data/icons/weather-74/24/weather-02-512.png',
         'partly-cloudy-night': 'https://cdn2.iconfinder.com/data/icons/weather-74/24/weather-02-512.png'
       }
-      var data = JSON.parse(sessionStorage.current)['daily']['data'][item[0]['_index']];
+
+      var data = JSON.parse(this.current)['daily']['data'][item[0]['_index']];
       var prec_val = "Heavy";
       if (data["precipIntensity"] <=0.001 ) {
 				prec_val = "0";
@@ -288,7 +291,7 @@ export class ResultsComponent implements OnInit {
 
       var info = {
         'date': item[0]['_model'].label,
-        'city': this.cur_city,//sessionStorage.city,
+        'city': this.cur_city,
         'temp': Math.round(data["temperatureHigh"]),
         'status': data["summary"],
         'icon': symbols[data["icon"]],

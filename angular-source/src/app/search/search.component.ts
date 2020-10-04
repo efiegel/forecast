@@ -1,14 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
-import { Observable, forkJoin } from 'rxjs';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  map,
-  switchMap
-} from 'rxjs/operators';
-import { FormControl, FormBuilder, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
+import { FormControl, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DataService } from '../data.service'
 
@@ -22,8 +17,6 @@ export class SearchComponent implements OnInit {
   constructor(private http: HttpClient, private router: Router, private formBuilder: FormBuilder, private dataService: DataService) {}
 
   myControl = new FormControl();
-
-  theData;
 
   activeTab;
   lat;
