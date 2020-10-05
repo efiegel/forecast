@@ -3,7 +3,7 @@
 This Angular web app fetches and displays weather forecast data. Node.js backend.
 
 ## Deployed application
-Link
+[forecast.us-west-1.elasticbeanstalk.com](forecast.us-west-1.elasticbeanstalk.com)
 
 ## APIs used
 * Dark Sky for weather data
