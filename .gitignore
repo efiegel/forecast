@@ -3,5 +3,5 @@ api_keys/
 angular-source/dist/
 angular-source/DS_Store
 angular-source/node_modules/
-.vscode/
+vscode/
 DS_Store
