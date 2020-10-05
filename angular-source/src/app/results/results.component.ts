@@ -215,18 +215,17 @@ export class ResultsComponent implements OnInit {
     const url = `http_req?url=${weatherApiUrl}`;
     let weather = this.http.get(url);
 
-    var background_image_url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Mount_Rushmore_Closeup_2017.jpg/299px-Mount_Rushmore_Closeup_2017.jpg'
-    // var background_image_url = `http_req?url=https://www.googleapis.com/customsearch/v1?q=${String(this.city)}%26cx=015445644856242596630:frbn8uolt9t%26imgSize=huge%26num=1%26searchType=image%26key=CUSTOMSEARCH_API_KEY`
-    // var background_image = this.http.get(background_image_url);
+    var background_image_url = `http_req?url=https://www.googleapis.com/customsearch/v1?q=${String(this.city)}%26cx=015445644856242596630:frbn8uolt9t%26imgSize=huge%26num=1%26searchType=image%26key=CUSTOMSEARCH_API_KEY`
+    var background_image = this.http.get(background_image_url);
     
     return forkJoin([
-      weather//,
-      // background_image
+      weather,
+      background_image
     ])
     .toPromise()
     .then(results => {
       this.dataService.weather.next(JSON.stringify(results[0]));
-      this.dataService.background.next(background_image_url);
+      this.dataService.background.next(results[1]['items'][0]['link']);
     });
   }
 
@@ -266,6 +265,8 @@ export class ResultsComponent implements OnInit {
       const url = params['url'];
       this.getWeather(url);
     });
+
+    this.weatherSelect = this.weather_array[0];
 
     // Modal definition (popup from daily chart tab)
     (this.daily_options as any).onClick = (event, item) => {

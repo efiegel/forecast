@@ -9,16 +9,15 @@
   ></div>
 </div>
 
+
 <tabset #tabset *ngIf="prog_bar == false">
     <tab heading="Current" id="current_tab" [style.backgroundImage]="'url('+ background_image +')'">
-        <div class='tab_wrapper'>
+        <div class='tab-wrapper'>
+            <div id='forced_spacing'></div>
             <div id='summary_table'>
-                <p style='font-size:32px;line-height: 5px;height: 5px;margin-top: 30px;margin-bottom: 0px;'>{{city}}</p><br>
-                {{tz}}<br>
-            
-                
-                <p style='font-size:60px; line-height: 5px;height: 5px;margin-top: 40px;margin-bottom: 20px;'>{{temp}} °F</p><br>
-                <p style='font-size:24px;line-height: 5px;height: 5px;margin-top: 0px;margin-bottom: 0px;'>{{status}}</p><br>
+                <p id='city'>{{city}}</p>
+                <p id='temp'>{{temp}} °F</p><br>
+                <p id='status'>{{status}}</p><br>
                 
                 <table class='summary_status'>
                     <tr>
@@ -47,37 +46,33 @@
             class="form-control"
             [(ngModel)]="weatherSelect"
             name="weatherSelect"
-            (change) = "makeHourlyChart()"
-            >
-            <option *ngFor="let weather of weather_array" [ngValue]="weather"
-                >{{ weather.name }}
-            </option>
+            (change)="makeHourlyChart()"
+            style='width:200px'>
+            <option *ngFor="let weather of weather_array" [ngValue]="weather">{{weather.name}}</option>
         </select>
 
         <div>
-            <div style="display: table" style="height:30vh; width:60vw; text-align: center">
-                <canvas baseChart width="100%" height="40%"
-                    [datasets]="hr_data"
-                    [labels]="hr_labels"
-                    [options]="hr_options"
-                    [legend]="hr_legend"
-                    [chartType]="hr_type">
-                </canvas>
-            </div>
+            <canvas baseChart
+                height="100%"
+                [datasets]="hr_data"
+                [labels]="hr_labels"
+                [options]="hr_options"
+                [legend]="hr_legend"
+                [chartType]="hr_type">
+            </canvas>
         </div>
     </tab>
             
     <tab heading="Weekly">
         <div>
-            <div style="display: block" style="height:30vh; width:60vw; text-align: center">
-                <canvas baseChart width="300" height="200"
-                    [datasets]="daily_data"
-                    [labels]="daily_labels"
-                    [options]="daily_options"
-                    [legend]="daily_legend"
-                    [chartType]="daily_type">
-                </canvas>
-            </div>
+            <canvas baseChart
+                height="100%"
+                [datasets]="daily_data"
+                [labels]="daily_labels"
+                [options]="daily_options"
+                [legend]="daily_legend"
+                [chartType]="daily_type">
+            </canvas>
         </div>
     </tab>
 </tabset>

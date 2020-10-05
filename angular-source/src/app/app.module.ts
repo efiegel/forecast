@@ -8,7 +8,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { FavoritesComponent } from './favorites/favorites.component';
 import { ResultsComponent } from './results/results.component';
 import { SearchComponent } from './search/search.component';
 import { DailyModalComponent } from './daily-modal/daily-modal.component';
@@ -23,7 +22,6 @@ import { DataService } from './data.service';
 @NgModule({
   declarations: [
     AppComponent,
-    FavoritesComponent,
     ResultsComponent,
     SearchComponent,
     DailyModalComponent
