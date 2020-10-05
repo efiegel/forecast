@@ -61,7 +61,7 @@ export class SearchComponent implements OnInit {
         .then(results => {
           this.lat = results['lat'];
           this.lon = results['lon'];
-          this.city = results['city'];
+          this.city = results['city'] + ', ' + results['region'] + ', ' + results['countryCode'];
         });
     } else {
       this.city = this.input_city;
